@@ -1,0 +1,33 @@
+name: Multiple Builds on File Changes
+on:
+  push:
+    paths:
+      - 'path/first/*'
+      - 'path/second/*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        path:
+          - 'path/first/*'
+          - 'path/second/*'
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
+      - name: Set changed paths
+        id: changed-paths
+        run: |
+          echo "::set-output name=paths::${{ join(github.event.changes, ',') }}"
+          
+      - name: Build
+        run: |
+          changed_paths=${{ steps.changed-paths.outputs.paths }}
+          echo "Building changed paths: $changed_paths"
+          github_event=${{ github.event }}
+          echo "GitHub event: $github_event"
+          # Add your build commands here, using the $changed_paths variable
