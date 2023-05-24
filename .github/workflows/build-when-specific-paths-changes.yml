@@ -20,16 +20,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v35
         
-      - name: Set changed paths
-        id: changed-paths
+        # To compare changes between the current commit and the last pushed remote commit set `since_last_remote_commit: true`. e.g
+        # with:
+        #   since_last_remote_commit: true 
+
+      - name: List all changed files
         run: |
-          echo "paths=${{ join(github.event.changes, ',') }}" >> $GITHUB_OUTPUT
-          
-      - name: Build
-        run: |
-          changed_paths=${{ steps.changed-paths.outputs.paths }}
-          echo "Building changed paths: $changed_paths"
-          github_event=${{ github.event }}
-          echo "GitHub event: $github_event"
-          # Add your build commands here, using the $changed_paths variable
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
