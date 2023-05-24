@@ -2,7 +2,7 @@ name: Multiple Builds on File Changes
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - 'path/first/*'
       - 'path/second/*'
