@@ -24,7 +24,7 @@ jobs:
       - name: Set changed paths
         id: changed-paths
         run: |
-          echo "::set-output name=paths::${{ join(github.event.changes, ',') }}"
+          echo "paths=${{ join(github.event.changes, ',') }}" >> $GITHUB_OUTPUT
           
       - name: Build
         run: |
